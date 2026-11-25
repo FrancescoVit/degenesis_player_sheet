@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DEGENESIS — Character Sheet</title>
+  <link rel="stylesheet" href="css/scheda.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="summary" id="summary" aria-live="polite"></div>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+  </header>
+
+  <main>
+    <!-- 1. ARCHETYPE -->
+    <section class="panel" id="tab-archetype" role="tabpanel">
+      <h2 class="section-title" data-text="sections.archetype"></h2>
+      <div class="grid fields-grid">
+        <label class="field"><span data-text="fields.name"></span><input data-field="archetype.name"></label>
+        <label class="field"><span data-text="fields.age"></span><input data-field="archetype.age" inputmode="numeric"></label>
+        <label class="field"><span data-text="fields.rank"></span><input data-field="archetype.rank"></label>
+        <label class="field"><span data-text="fields.experience"></span><input data-field="archetype.experience"></label>
+        <label class="field"><span data-text="fields.sex"></span><input data-field="archetype.sex"></label>
+        <label class="field"><span data-text="fields.height"></span><input data-field="archetype.height" inputmode="numeric"></label>
+        <label class="field"><span data-text="fields.weight"></span><input data-field="archetype.weight" inputmode="numeric"></label>
+        <label class="field"><span data-text="fields.money"></span><input data-field="archetype.money" inputmode="numeric"></label>
+        <label class="field wide"><span data-text="fields.legacy"></span><textarea data-field="archetype.legacy" rows="3"></textarea></label>
+      </div>
+
+      <h2 class="section-title" data-text="sections.origins"></h2>
+      <div class="grid origins">
+        <label class="origin"><span data-text="fields.culture"></span><input data-field="archetype.culture" list="list-cultures"></label>
+        <label class="origin"><span data-text="fields.concept"></span><input data-field="archetype.concept"></label>
+        <label class="origin"><span data-text="fields.cult"></span><input data-field="archetype.cult" list="list-cults"></label>
+      </div>
+      <datalist id="list-cultures"></datalist>
+      <datalist id="list-cults"></datalist>
+    </section>
+
+    <!-- 2. GAME DASHBOARD: attributes & skills (left) + condition (right), advantages below -->
+    <section class="panel" id="tab-stats" role="tabpanel">
+      <div class="dashboard">
+        <div class="dash-left">
+          <h2 class="section-title" data-text="sections.attributes"></h2>
+          <div class="counters" id="counters"></div>
+          <details class="config" id="config"></details>
+          <div class="grid attributes" id="attributes"></div>
+        </div>
+        <div class="dash-right">
+          <h2 class="section-title" data-text="sections.condition"></h2>
+          <div class="derived" id="derived"></div>
+          <div class="passive" id="passive"></div>
+          <div id="tracks"></div>
+          <div class="block">
+            <h3 class="bar" data-text="blocks.modifiers"></h3>
+            <div id="modifiers"></div>
+          </div>
+          <div class="block">
+            <h3 class="bar" data-text="blocks.complications"></h3>
+            <div id="complications"></div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title" data-text="sections.advantages"></h2>
+      <div class="grid three">
+        <div class="block">
+          <h3 class="bar" data-text="blocks.backgrounds"></h3>
+          <div id="backgrounds"></div>
+        </div>
+        <div class="block">
+          <h3 class="bar" data-text="blocks.potentials"></h3>
+          <div id="potentials"></div>
+        </div>
+        <div class="block">
+          <h3 class="bar" data-text="blocks.scars"></h3>
+          <label class="field"><span data-text="fields.groupName"></span><input data-field="scars.groupName"></label>
+          <label class="field"><span data-text="fields.alignment"></span><input data-field="scars.alignment"></label>
+          <label class="field"><span data-text="fields.constellation"></span><input data-field="scars.constellation"></label>
+          <label class="field"><span data-text="fields.scarsValue"></span><input data-field="scars.scarsValue"></label>
+          <div class="stat-row" id="infamy"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ARSENAL -->
+    <section class="panel" id="tab-arsenal" role="tabpanel">
+      <h2 class="section-title" data-text="sections.arsenal"></h2>
+      <div class="block">
+        <h3 class="bar" data-text="blocks.weapons"></h3>
+        <div id="weapons"></div>
+      </div>
+      <div class="block">
+        <h3 class="bar" data-text="blocks.armor"></h3>
+        <div id="armor"></div>
+      </div>
+    </section>
+
+    <!-- 4. POSSESSIONS -->
+    <section class="panel" id="tab-possessions" role="tabpanel">
+      <h2 class="section-title" data-text="sections.possessions"></h2>
+      <div class="block">
+        <h3 class="bar" data-text="blocks.equipment"></h3>
+        <div id="equipment"></div>
+        <p class="encumbrance" id="encumbrance"></p>
+      </div>
+      <div class="block">
+        <h3 class="bar" data-text="blocks.artifacts"></h3>
+        <div id="artifacts"></div>
+      </div>
+    </section>
+
+    <!-- 5. ALTRO -->
+    <section class="panel" id="tab-other" role="tabpanel">
+      <h2 class="section-title" data-text="sections.profile"></h2>
+      <div class="grid three profile">
+        <div class="block">
+          <h3 class="bar" data-text="blocks.visuals"></h3>
+          <div id="visuals"></div>
+        </div>
+        <div class="block portrait-block">
+          <h3 class="bar" data-text="blocks.portrait"></h3>
+          <div class="portrait" id="portrait"></div>
+          <div class="portrait-actions">
+            <label class="button"><span data-text="buttons.uploadPortrait"></span><input type="file" accept="image/*" id="portrait-input" hidden></label>
+            <button type="button" class="button ghost" id="portrait-remove" data-text="buttons.removePortrait"></button>
+          </div>
+        </div>
+        <div class="block">
+          <h3 class="bar" data-text="blocks.relationships"></h3>
+          <div id="relationships"></div>
+        </div>
+      </div>
+
+      <h2 class="section-title" data-text="sections.settings"></h2>
+      <div class="settings">
+        <fieldset>
+          <legend data-text="settings.trackStyle"></legend>
+          <label><input type="radio" name="trackStyle" value="red"> <span data-text="settings.styleRed"></span></label>
+          <label><input type="radio" name="trackStyle" value="cross"> <span data-text="settings.styleCross"></span></label>
+        </fieldset>
+        <div class="settings-buttons">
+          <button type="button" class="button" id="btn-export" data-text="buttons.exportJson"></button>
+          <label class="button"><span data-text="buttons.importJson"></span><input type="file" accept="application/json,.json" id="import-input" hidden></label>
+          <button type="button" class="button ghost" id="btn-example" data-text="buttons.loadExample"></button>
+          <button type="button" class="button danger" id="btn-reset" data-text="buttons.reset"></button>
+        </div>
+        <p class="note" data-text="settings.storageNote"></p>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" data-text="saved"></div>
+
+  <script src="js/testi-en.js"></script>
+  <script src="js/esempio.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/scheda.js"></script>
+</body>
+</html>

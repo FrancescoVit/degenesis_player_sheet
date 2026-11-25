@@ -1,0 +1,23 @@
+# Materiale di riferimento protetto da copyright (schede, manuali): solo in locale
+riferimenti/
+
+# Configurazione locale e segreti
+.env
+.env.*
+*.local
+config.local.js
+
+# Claude Code: impostazioni personali
+.claude/settings.local.json
+
+# Editor e sistema
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Dipendenze e build, se mai serviranno
+node_modules/
+dist/
