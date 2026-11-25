@@ -73,6 +73,7 @@ Browser del giocatore  ──HTTPS──►  GitHub Pages   (serve solo i file H
 ```
 
 - **Frontend statico** su **GitHub Pages**.
+  - Cache: in `scheda.html` CSS e JS hanno `?v=N`; **a ogni modifica pubblicata si alza N**, così i browser non mescolano file vecchi e nuovi (GitHub Pages fa tenere i file in cache 10 minuti).
 - Il **JavaScript eseguito nel browser** del giocatore legge e scrive direttamente sul DB tramite le API di Supabase. Non c'è un server proprio da gestire.
 - **Database**: **Supabase** (alternativa: Firebase).
   - Attenzione: sul piano gratuito Supabase il progetto va in pausa dopo circa 7 giorni senza attività. Valutare la riattivazione manuale, un accesso automatico periodico, oppure Firebase.

@@ -445,6 +445,7 @@ const BACKPACK_ENC = 1;
 function renderBackpack() {
   const bp = state.backpack;
   const node = document.getElementById("backpack");
+  if (!node) return; // page and script out of sync (cache): don't break the rest
   node.classList.toggle("off", !bp.carried);
   node.replaceChildren(
     el("div", { class: "backpack-head" },
