@@ -6,6 +6,10 @@ Scheda personaggio interattiva per **Degenesis Rebirth**, utilizzabile da PC, ta
 
 ## Provarla
 
+**Online:** https://francescovit.github.io/degenesis_player_sheet/scheda.html
+
+Oppure in locale:
+
 1. Scarica il repository (**Code → Download ZIP**) e scompattalo.
 2. Apri `scheda.html` con il browser.
 
