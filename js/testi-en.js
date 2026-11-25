@@ -101,7 +101,13 @@ const TEXT = {
 
   encumbrance: {
     total: "Total encumbrance", limit: "limit (Body + Force)",
-    note: "Weapons + armor + equipment. −1D per point over the limit.",
+    note: "Weapons + armor + equipment + backpack. −1D per point over the limit.",
+  },
+
+  backpack: {
+    name: "Backpack",
+    note: "Holds up to 3 items: they count Enc 0. Untick if you don't carry it.",
+    empty: "(empty)",
   },
 
   buttons: {

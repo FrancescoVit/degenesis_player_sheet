@@ -30,12 +30,13 @@ Durante la sessione ogni giocatore apre il sito, entra con il proprio account, a
 - **Intestazione compatta sempre visibile** su tutti i tab, in piccolo: **nome PG, Drafts/Dinars, Culto**.
 - **Divisione in 5 tab**, fedele alle sezioni della scheda (riferimento: `riferimenti/Bash.pdf`):
   1. **Archetype** (esteso): nome, età, rango, esperienza, legacy, sesso, altezza, peso, drafts/dinars; Culture, Concept, Cult.
-  2. **Attributes & Condition** — la "dashboard di gioco": a sinistra Attributes & Skills, a destra Condition, affiancati (su schermi stretti uno sotto l'altro); sotto, Advantages (Backgrounds, Potentials, Scars).
+  2. **Attributes & Condition** — la "dashboard di gioco": a sinistra Attributes & Skills, a destra Condition, affiancati (su schermi stretti, tablet in verticale e smartphone, uno sotto l'altro con **Condition sopra**); sotto, Advantages (Backgrounds, Potentials, Scars).
      - Condition contiene: riquadri dei valori derivati (Iniziativa PSY+Reaction; Ingombro trasportato / limite BOD+Force; Difesa attiva: Schivata AGI+Mobility, Contrattacco BOD+Brawl, Contrattacco BOD+Melee; Difesa passiva = 1 base +1 attivo e in piedi, +1 mosso > 2 m, copertura +1 parziale / +4 totale), tracciati, Modifiers, Complications.
      - Tracciati: si disegnano tutte le caselle possibili come sulla scheda (24 per Ego/Spore/Fleshwounds, 12 per Trauma). Quelle possedute (da formula) sono **nere**, quelle perse **rosse** (cliccando una nera), le restanti **bianche** e non cliccabili.
      - Formule (cheat sheet regole): Ego = (INT+Focus oppure INS+Primal)×2; Spore = (PSY+Faith/Willpower)×2; Fleshwounds = (BOD+Toughness)×2; Trauma = BOD+PSY.
   3. **Arsenal**: Weapons (handling, distance, damage, mag, properties, enc., tech, slots); Armor (armor value, properties, enc., tech, slots).
   4. **Possessions**: Equipment (con enc. e totale), Artifacts (activation, operation, appraisal value).
+     - **Zaino** (Backpack): blocco fisso in cima all'Equipment, enc. 1, con 3 posti fissi (si possono lasciare vuoti, non si aggiungono né tolgono); gli oggetti dentro hanno enc. 0. Una spunta indica se lo zaino è portato. Il "+ Add" aggiunge oggetti fuori dallo zaino, con il loro enc.
   5. **Altro**: Visuals, Portrait, Relationships (cult + mod.); impostazioni ed export/import.
 - **Creazione del personaggio** (Katharsys p. 33): 10 punti attributo (+1 gratuito per attributo, quindi 16 in totale), 28 punti abilità, 4 punti background. Massimo in creazione: attributo 3, abilità 2, background 3; ogni bonus di Culture, Concept e Cult alza di +1 il massimo del tratto indicato. Dopo la creazione: attributi 1–6, abilità 0–6.
 - Su PC e tablet: impaginato più largo, simile al foglio. Su smartphone: una colonna.

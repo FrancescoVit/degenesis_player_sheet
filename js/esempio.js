@@ -31,9 +31,9 @@ const EXAMPLE_SHEET = {
   ],
   armor: [{ name: "Fur Cape", armor: "1", properties: "", enc: "1", tech: "I", slots: "" }],
   equipment: [
-    { name: "Flask", enc: "" }, { name: "Torch", enc: "" }, { name: "Flint and Tinder", enc: "" },
-    { name: "Blanket / Sleeping Bag", enc: "2" }, { name: "Backpack", enc: "1" }, { name: "Bandage", enc: "" },
+    { name: "Blanket / Sleeping Bag", enc: "2" }, { name: "Bandage", enc: "" },
   ],
+  backpack: { carried: true, slots: ["Flask", "Torch", "Flint and Tinder"] },
   artifacts: [],
   other: { visuals: [], relationships: [], portrait: "" },
   config: { freeEdit: false },

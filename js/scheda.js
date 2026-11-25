@@ -79,6 +79,8 @@ function blankSheet() {
       modifiers: [], complications: [],
     },
     weapons: [], armor: [], equipment: [], artifacts: [],
+    // The backpack: Enc 1, holds up to 3 items that weigh nothing.
+    backpack: { carried: true, slots: ["", "", ""] },
     other: { visuals: [], relationships: [], portrait: "" },
     // Free editing: pips change without spending XP (new character, corrections).
     config: { freeEdit: false },
@@ -438,11 +440,32 @@ function renderList(id) {
   container.replaceChildren(...rows);
 }
 
-// Everything carried counts: weapons, armor and equipment.
+// The backpack always sits on top of the equipment: fixed Enc, 3 slots at Enc 0.
+const BACKPACK_ENC = 1;
+function renderBackpack() {
+  const bp = state.backpack;
+  const node = document.getElementById("backpack");
+  node.classList.toggle("off", !bp.carried);
+  node.replaceChildren(
+    el("div", { class: "backpack-head" },
+      el("label", { class: "backpack-name" },
+        el("input", { type: "checkbox", checked: bp.carried ? "" : null,
+          onchange: (e) => { bp.carried = e.target.checked; renderBackpack(); changed(); } }),
+        el("strong", { text: t("backpack.name") })),
+      el("span", { class: "backpack-enc", text: `${t("columns.enc")} ${bp.carried ? BACKPACK_ENC : 0}` }),
+      el("span", { class: "note", text: t("backpack.note") })),
+    ...bp.slots.map((value, i) => el("label", { class: "backpack-slot" },
+      el("span", { class: "slot-num", text: `${i + 1}` }),
+      el("input", { value, placeholder: t("backpack.empty"), disabled: bp.carried ? null : "",
+        "aria-label": `${t("backpack.name")} ${i + 1}`,
+        oninput: (e) => { bp.slots[i] = e.target.value; changedText(); } }))));
+}
+
+// Everything carried counts: weapons, armor, equipment and the backpack.
 function encumbrance() {
   const sum = (list) => list.reduce((s, it) => s + num(it.enc), 0);
   return {
-    total: sum(state.weapons) + sum(state.armor) + sum(state.equipment),
+    total: sum(state.weapons) + sum(state.armor) + sum(state.equipment) + (state.backpack.carried ? BACKPACK_ENC : 0),
     limit: state.attributes.body + state.skills.force,
   };
 }
@@ -576,13 +599,22 @@ function renderAll() {
   renderXp();
   bindFields();
   Object.keys(LISTS).forEach(renderList);
+  renderBackpack();
   renderPortrait();
   document.querySelectorAll('input[name="trackStyle"]').forEach((r) => { r.checked = r.value === settings.trackStyle; });
   refresh();
 }
 
+// Defaults plus fixes for older saves.
+function loadState(data) {
+  const s = withDefaults(blankSheet(), data);
+  s.backpack.slots = [0, 1, 2].map((i) => String(s.backpack.slots[i] ?? ""));
+  s.equipment = s.equipment.filter((it) => !/^backpack$/i.test(String(it.name).trim()));
+  return s;
+}
+
 function replaceSheet(data) {
-  state = withDefaults(blankSheet(), data);
+  state = loadState(data);
   renderAll();
   save();
 }
@@ -624,7 +656,7 @@ function setupControls() {
 
 (async function start() {
   const saved = await DB.loadSheet();
-  state = withDefaults(blankSheet(), saved || structuredClone(EXAMPLE_SHEET));
+  state = loadState(saved || structuredClone(EXAMPLE_SHEET));
   setupControls();
   renderTabs();
   renderAll();

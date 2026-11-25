@@ -100,7 +100,7 @@ main {
 .field > span, .origin > span {
   font-size: .66rem; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-soft);
 }
-.field input, .field textarea, .origin input, .list-row input {
+.field input, .field textarea, .origin input, .list-row input, .backpack-slot input {
   width: 100%; min-width: 0;
   border: 0; border-bottom: 1px solid var(--ink); border-radius: 0;
   background: transparent; padding: .25rem .1rem;
@@ -303,6 +303,22 @@ input:focus, textarea:focus { outline: none; background: #f7f4ec; border-bottom-
 }
 .toast.show { opacity: .95; }
 
+/* ---------- Backpack ---------- */
+
+.backpack {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: .5rem .6rem .6rem; margin: .3rem 0 .8rem;
+}
+.backpack-head { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .9rem; margin-bottom: .35rem; }
+.backpack-name { display: flex; align-items: center; gap: .4rem; cursor: pointer; }
+.backpack-name input { width: 1.1rem; height: 1.1rem; accent-color: var(--ink); }
+.backpack-enc { font-size: .75rem; font-weight: 600; }
+.backpack-head .note { font-size: .72rem; color: var(--ink-soft); }
+.backpack-slot { display: grid; grid-template-columns: 1.4rem 1fr; align-items: center; gap: .4rem; padding: .12rem 0 .12rem .6rem; }
+.slot-num { font-size: .7rem; color: var(--ink-soft); text-align: right; }
+.backpack-slot input { width: 100%; }
+.backpack.off .backpack-slot { opacity: .4; }
+
 /* ---------- Medium screens ---------- */
 
 @media (max-width: 1300px) {
@@ -311,6 +327,7 @@ input:focus, textarea:focus { outline: none; background: #f7f4ec; border-bottom-
 @media (max-width: 1000px) {
   .dashboard { grid-template-columns: minmax(0, 1fr); }
   .dash-right { position: static; max-height: none; overflow: visible; }
+  .dash-right { order: -1; } /* tablet and phone: condition first, it matters most in play */
 }
 
 /* ---------- Tablet ---------- */
@@ -344,7 +361,6 @@ input:focus, textarea:focus { outline: none; background: #f7f4ec; border-bottom-
   .stat-row { min-height: 2.4rem; }
   .track-boxes { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; }
   .dash-left .attributes { grid-template-columns: minmax(0, 1fr); }
-  .dash-right { order: -1; } /* in play, condition matters most: show it first */
   .passive { grid-template-columns: minmax(0, 1fr); }
   .button.small { min-height: 2.5rem; padding: .2rem 1rem; }
   .section-title { letter-spacing: .18em; font-size: .9rem; }
