@@ -65,7 +65,6 @@ const TEXT = {
     hint: "Raising a trait spends XP after confirmation (Katharsys p. 102). Attributes: new level × 10 if preferred (★), × 12 otherwise. Skills: new level × 4 if their attribute is preferred, × 5 otherwise. Potentials: (all potential levels + 1) × 10. Lowering refunds the XP.",
     freeEditHint: "Free editing is on: pips change without spending XP. Use it to create a character or fix mistakes, then turn it off.",
     preferred: "Preferred attribute (cheaper XP). Rules: Focus → INT, AGI, PSY; Primal → BOD, CHA, INS.",
-    skillSum: "Sum of skill levels",
     notEnough: "Not enough experience: {cost} XP needed, {xp} XP available.",
     confirmRaise: "Raise {name} from {from} to {to} for {cost} XP?\n(available: {xp} XP)",
     confirmLower: "Lower {name} from {from} to {to} and refund {cost} XP?",

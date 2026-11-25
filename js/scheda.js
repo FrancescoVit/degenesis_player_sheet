@@ -282,7 +282,6 @@ function updateXp() {
 function renderAttributes() {
   const { attributes: attrs, skills, preferred } = state;
   const blocks = ATTRIBUTES.map((a) => {
-    const skillSum = a.skills.reduce((s, k) => s + skills[k], 0);
     const pref = preferred[a.key];
     const attrName = t(`attributes.${a.key}`);
     const attrCost = traitCostFns(XP_FACTOR.attribute(pref), attrs[a.key]);
@@ -293,7 +292,6 @@ function renderAttributes() {
         onclick: () => { preferred[a.key] = !pref; changed(); },
       }),
       el("h3", { text: attrName }),
-      el("span", { class: "bar-count", title: t("xp.skillSum"), text: `Σ ${skillSum}` }),
       pips({
         value: attrs[a.key], min: 1, limit: affordableLevel(attrs[a.key], TRAIT_MAX, attrCost), label: attrName,
         tip: (i) => (i > attrs[a.key] ? `${attrCost(i)} XP` : null),

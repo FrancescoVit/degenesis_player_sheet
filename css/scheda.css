@@ -91,7 +91,6 @@ main {
   clip-path: polygon(0 0, 100% 0, calc(100% - .7rem) 100%, 0 100%);
 }
 .attr-bar h3 { margin: 0; font: inherit; flex: 1; }
-.bar-count { font-size: .65rem; color: #aaa; letter-spacing: .05em; }
 .attr-bar .pip { border-color: #fff; }
 .attr-bar .pip.on { background: #fff; }
 
