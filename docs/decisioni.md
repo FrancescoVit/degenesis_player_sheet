@@ -42,8 +42,13 @@ Durante la sessione ogni giocatore apre il sito, entra con il proprio account, a
 
 ### Attributi e abilità
 - Ogni attributo o abilità è una **fila di caselle/pallini selezionabili** (es. 1–6). Cliccando la n-esima si riempiono le prime n; cliccando l'ultima piena si scende di uno.
-- **Contatore accanto** a ogni attributo o blocco: punti spesi / punti disponibili (attributi e abilità separati), rosso se si sfora.
-- Punti disponibili e massimi (che in creazione dipendono da Cultura e Concetto) **configurabili** da un piccolo pannello, non scritti fissi nel codice. Così vale sia per la creazione sia per la crescita con l'esperienza.
+- ~~Contatori dei punti di creazione~~: **tolti** (valgono solo in creazione).
+- **Crescita con l'esperienza** (Katharsys p. 102–103):
+  - Campo "Experience available" (lo stesso di Archetype). Se gli XP non bastano, i pallini vuoti non si possono aumentare; se bastano, l'aumento chiede **conferma** e scala gli XP. Abbassare chiede conferma e **rimborsa** gli XP.
+  - Costo di ogni livello = nuovo livello × fattore: attributo preferito ×10, altri ×12; abilità di un attributo preferito ×4, altre ×5. Si sale un livello alla volta (da 2 a 4 = 3×f + 4×f).
+  - Potenziali: ogni nuovo livello (anche di un potenziale appena aggiunto) costa (somma di tutti i livelli di potenziale + 1) × 10.
+  - **Stella sull'attributo** per segnare i preferiti. Da regole: Focus → INT, AGI, PSY; Primal → BOD, CHA, INS.
+  - **"Free editing (no XP)"**: interruttore per creare il personaggio o correggere errori senza spendere XP (eccezione voluta al principio dell'unica modalità).
 - Abilità che si escludono a vicenda: **Focus / Primal** e **Faith / Willpower**. Attivandone una, l'altra si blocca.
 - Mostrare la **riserva di dadi** calcolata (attributo + abilità, con il limite previsto dalle regole).
 

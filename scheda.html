@@ -20,7 +20,7 @@
         <label class="field"><span data-text="fields.name"></span><input data-field="archetype.name"></label>
         <label class="field"><span data-text="fields.age"></span><input data-field="archetype.age" inputmode="numeric"></label>
         <label class="field"><span data-text="fields.rank"></span><input data-field="archetype.rank"></label>
-        <label class="field"><span data-text="fields.experience"></span><input data-field="archetype.experience"></label>
+        <label class="field"><span data-text="fields.experience"></span><input data-field="archetype.experience" type="number" min="0" inputmode="numeric"></label>
         <label class="field"><span data-text="fields.sex"></span><input data-field="archetype.sex"></label>
         <label class="field"><span data-text="fields.height"></span><input data-field="archetype.height" inputmode="numeric"></label>
         <label class="field"><span data-text="fields.weight"></span><input data-field="archetype.weight" inputmode="numeric"></label>
@@ -43,8 +43,7 @@
       <div class="dashboard">
         <div class="dash-left">
           <h2 class="section-title" data-text="sections.attributes"></h2>
-          <div class="counters" id="counters"></div>
-          <details class="config" id="config"></details>
+          <div class="xp" id="xp"></div>
           <div class="grid attributes" id="attributes"></div>
         </div>
         <div class="dash-right">

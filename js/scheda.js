@@ -1,4 +1,4 @@
-// Character sheet logic: tabs, pips, counters, tracks, lists, autosave.
+// Character sheet logic: tabs, pips, experience, tracks, lists, autosave.
 // Security rule: user text is only ever written with .value / .textContent, never innerHTML.
 "use strict";
 
@@ -70,6 +70,7 @@ function blankSheet() {
   return {
     archetype: { name: "", age: "", rank: "", experience: "", legacy: "", sex: "", height: "", weight: "", money: "", culture: "", concept: "", cult: "" },
     attributes, skills, backgrounds,
+    preferred: Object.fromEntries(ATTRIBUTES.map((a) => [a.key, false])),
     potentials: [],
     scars: { groupName: "", alignment: "", constellation: "", scarsValue: "", infamy: 0 },
     condition: {
@@ -79,7 +80,8 @@ function blankSheet() {
     },
     weapons: [], armor: [], equipment: [], artifacts: [],
     other: { visuals: [], relationships: [], portrait: "" },
-    config: { attrPoints: "16", skillPoints: "28", backgroundPoints: "4", attrMax: 6, skillMax: 6, backgroundMax: 6 },
+    // Free editing: pips change without spending XP (new character, corrections).
+    config: { freeEdit: false },
   };
 }
 
@@ -143,7 +145,7 @@ function flashToast() {
 /* ---------- Pips ---------- */
 
 // Row of diamond pips. Clicking pip n sets value n; clicking the last filled one lowers by one.
-function pips({ value, max = 6, min = 0, limit = max, disabled = false, label, onSet }) {
+function pips({ value, max = 6, min = 0, limit = max, disabled = false, label, onSet, tip }) {
   const wrap = el("div", { class: "pips" + (disabled ? " is-disabled" : ""), role: "group", "aria-label": label });
   for (let i = 1; i <= max; i++) {
     wrap.append(el("button", {
@@ -151,6 +153,7 @@ function pips({ value, max = 6, min = 0, limit = max, disabled = false, label, o
       class: "pip" + (i <= value ? " on" : "") + (i > limit ? " over" : ""),
       "aria-label": `${label} ${i}`,
       "aria-pressed": String(i <= value),
+      title: tip ? tip(i) : null,
       disabled: disabled || i > limit,
       onclick: () => onSet(Math.max(min, i === value ? i - 1 : i)),
     }));
@@ -192,78 +195,141 @@ function renderSummary() {
   );
 }
 
+/* ---------- Experience (Katharsys p. 102–103) ---------- */
+
+// Raising one level costs: new level × factor. Preferred attributes ×10 (others ×12),
+// skills of a preferred attribute ×4 (others ×5).
+// Potentials: every new level costs (sum of all potential levels + 1) × 10, new potentials included.
+const XP_FACTOR = {
+  attribute: (pref) => (pref ? 10 : 12),
+  skill: (pref) => (pref ? 4 : 5),
+};
+const SKILL_ATTRIBUTE = {};
+ATTRIBUTES.forEach((a) => a.skills.forEach((s) => { SKILL_ATTRIBUTE[s] = a.key; }));
+
+const xpAvailable = () => num(state.archetype.experience);
+const freeEdit = () => state.config.freeEdit;
+const potentialLevels = () => state.potentials.reduce((s, p) => s + num(p.level), 0);
+
+// Cost of going from level `from` to level `to` (to > from).
+function traitCost(factor, from, to) {
+  let cost = 0;
+  for (let l = from + 1; l <= to; l++) cost += l * factor;
+  return cost;
+}
+function potentialCost(totalLevels, steps) {
+  let cost = 0;
+  for (let i = 1; i <= steps; i++) cost += (totalLevels + i) * 10;
+  return cost;
+}
+// Highest level reachable with the XP available (lowering is always allowed).
+function affordableLevel(current, max, costTo) {
+  if (freeEdit()) return max;
+  let level = current;
+  while (level < max && costTo(level + 1) <= xpAvailable()) level++;
+  return level;
+}
+
+// Apply a change to a trait, asking confirmation and moving XP. Returns true if applied.
+function spendXp(label, from, to, costTo) {
+  if (to === from) return false;
+  if (freeEdit()) return true;
+  const xp = xpAvailable();
+  if (to > from) {
+    const cost = costTo(to);
+    if (cost > xp) { alert(t("xp.notEnough").replace("{cost}", cost).replace("{xp}", xp)); return false; }
+    const msg = t("xp.confirmRaise").replace("{name}", label).replace("{from}", from).replace("{to}", to)
+      .replace("{cost}", cost).replace("{xp}", xp);
+    if (!confirm(msg)) return false;
+    state.archetype.experience = String(xp - cost);
+  } else {
+    const refund = costTo.refund(from, to);
+    const msg = t("xp.confirmLower").replace("{name}", label).replace("{from}", from).replace("{to}", to).replace("{cost}", refund);
+    if (!confirm(msg)) return false;
+    state.archetype.experience = String(xp + refund);
+  }
+  return true;
+}
+// costTo(level): XP to go from `current` up to `level`; costTo.refund(from, to): XP given back when lowering.
+function traitCostFns(factor, current) {
+  const costTo = (level) => traitCost(factor, current, level);
+  costTo.refund = (from, to) => traitCost(factor, to, from);
+  return costTo;
+}
+
+function renderXp() {
+  document.getElementById("xp").replaceChildren(
+    el("label", { class: "xp-field" },
+      el("span", { class: "counter-label", text: t("xp.available") }),
+      el("input", { type: "number", min: "0", inputmode: "numeric", "data-field": "archetype.experience" }),
+      el("span", { class: "counter-label", text: "XP" })),
+    el("label", { class: "free-edit" },
+      el("input", { type: "checkbox", id: "free-edit",
+        onchange: (e) => { state.config.freeEdit = e.target.checked; changed(); } }),
+      el("span", { text: t("xp.freeEdit") })),
+    el("p", { class: "note", id: "xp-note" }));
+}
+function updateXp() {
+  const box = document.getElementById("xp");
+  box.classList.toggle("free", freeEdit());
+  box.classList.toggle("empty", !freeEdit() && xpAvailable() <= 0);
+  document.getElementById("free-edit").checked = freeEdit();
+  document.getElementById("xp-note").textContent = freeEdit() ? t("xp.freeEditHint") : t("xp.hint");
+}
+
 /* ---------- Attributes, skills, backgrounds ---------- */
 
 function renderAttributes() {
-  const { attributes: attrs, skills, config } = state;
+  const { attributes: attrs, skills, preferred } = state;
   const blocks = ATTRIBUTES.map((a) => {
     const skillSum = a.skills.reduce((s, k) => s + skills[k], 0);
+    const pref = preferred[a.key];
+    const attrName = t(`attributes.${a.key}`);
+    const attrCost = traitCostFns(XP_FACTOR.attribute(pref), attrs[a.key]);
     const head = el("div", { class: "bar attr-bar" },
-      el("h3", { text: t(`attributes.${a.key}`) }),
-      el("span", { class: "bar-count", title: t("counters.skills"), text: `Σ ${skillSum}` }),
+      el("button", {
+        type: "button", class: "pref" + (pref ? " on" : ""), "aria-pressed": String(pref),
+        title: t("xp.preferred"), "aria-label": `${attrName}: ${t("xp.preferred")}`, text: pref ? "★" : "☆",
+        onclick: () => { preferred[a.key] = !pref; changed(); },
+      }),
+      el("h3", { text: attrName }),
+      el("span", { class: "bar-count", title: t("xp.skillSum"), text: `Σ ${skillSum}` }),
       pips({
-        value: attrs[a.key], min: 1, limit: num(config.attrMax) || 6, label: t(`attributes.${a.key}`),
-        onSet: (v) => { attrs[a.key] = v; changed(); },
+        value: attrs[a.key], min: 1, limit: affordableLevel(attrs[a.key], TRAIT_MAX, attrCost), label: attrName,
+        tip: (i) => (i > attrs[a.key] ? `${attrCost(i)} XP` : null),
+        onSet: (v) => { if (spendXp(attrName, attrs[a.key], v, attrCost)) { attrs[a.key] = v; changed(); } },
       }));
     const rows = a.skills.map((s) => {
       const partner = EXCLUSIVE[s];
       const locked = partner && skills[partner] > 0;
       const pool = formatPool(attrs[a.key] + skills[s]);
+      const name = t(`skills.${s}`);
+      const cost = traitCostFns(XP_FACTOR.skill(pref), skills[s]);
       return el("div", { class: "stat-row" + (locked ? " locked" : "") },
-        el("span", { class: "stat-name", text: t(`skills.${s}`),
+        el("span", { class: "stat-name", text: name,
           title: locked ? `${t("exclusive")} ${t(`skills.${partner}`)}` : null }),
         pips({
-          value: skills[s], limit: num(config.skillMax) || 6, disabled: locked, label: t(`skills.${s}`),
-          onSet: (v) => { skills[s] = v; changed(); },
+          value: skills[s], limit: affordableLevel(skills[s], TRAIT_MAX, cost), disabled: locked, label: name,
+          tip: (i) => (i > skills[s] ? `${cost(i)} XP` : null),
+          onSet: (v) => { if (spendXp(name, skills[s], v, cost)) { skills[s] = v; changed(); } },
         }),
         el("span", { class: "pool", title: t("pool"), text: locked ? "" : pool }));
     });
-    return el("div", { class: "block" }, head, ...rows);
+    return el("div", { class: "block" + (pref ? " preferred" : "") }, head, ...rows);
   });
   document.getElementById("attributes").replaceChildren(...blocks);
 }
 
 function renderBackgrounds() {
-  const { backgrounds, config } = state;
+  const { backgrounds } = state;
   document.getElementById("backgrounds").replaceChildren(...BACKGROUNDS.map((b) =>
     el("div", { class: "stat-row" },
       el("span", { class: "stat-name", text: t(`backgrounds.${b}`) }),
-      pips({ value: backgrounds[b], limit: num(config.backgroundMax) || 6, label: t(`backgrounds.${b}`),
+      pips({ value: backgrounds[b], label: t(`backgrounds.${b}`),
         onSet: (v) => { backgrounds[b] = v; changed(); } }))));
   document.getElementById("infamy").replaceChildren(
     el("span", { class: "stat-name", text: t("fields.infamy") }),
     pips({ value: state.scars.infamy, label: t("fields.infamy"), onSet: (v) => { state.scars.infamy = v; changed(); } }));
-}
-
-function renderCounters() {
-  const { attributes, skills, backgrounds, config } = state;
-  const sum = (o) => Object.values(o).reduce((s, v) => s + v, 0);
-  const counter = (label, spent, available) => {
-    const avail = String(available).trim() === "" ? null : num(available);
-    const over = avail !== null && spent > avail;
-    return el("div", { class: "counter" + (over ? " over" : "") },
-      el("span", { class: "counter-label", text: label }),
-      el("span", { class: "counter-value", text: avail === null ? String(spent) : `${spent} / ${avail}` }));
-  };
-  document.getElementById("counters").replaceChildren(
-    counter(t("counters.attributes"), sum(attributes), config.attrPoints),
-    counter(t("counters.skills"), sum(skills), config.skillPoints),
-    counter(t("counters.backgrounds"), sum(backgrounds), config.backgroundPoints));
-}
-
-function renderConfig() {
-  const c = state.config;
-  const input = (key, label) => el("label", { class: "field small" }, el("span", { text: label }),
-    el("input", { type: "number", min: "0", inputmode: "numeric", value: c[key],
-      oninput: (e) => { c[key] = e.target.value; changed(); } }));
-  document.getElementById("config").replaceChildren(
-    el("summary", { text: t("counters.configure") }),
-    el("div", { class: "config-grid" },
-      el("span", { class: "config-head" }), el("span", { class: "config-head", text: t("counters.available") }), el("span", { class: "config-head", text: t("counters.max") }),
-      el("span", { text: t("counters.attributes") }), input("attrPoints", t("counters.available")), input("attrMax", t("counters.max")),
-      el("span", { text: t("counters.skills") }), input("skillPoints", t("counters.available")), input("skillMax", t("counters.max")),
-      el("span", { text: t("counters.backgrounds") }), input("backgroundPoints", t("counters.available")), input("backgroundMax", t("counters.max"))),
-    el("p", { class: "note", text: t("counters.hint") }));
 }
 
 /* ---------- Condition tracks ---------- */
@@ -308,6 +374,19 @@ function renderTracks() {
 
 /* ---------- Editable lists ---------- */
 
+// Pips living inside editable lists (potentials): redrawn on refresh without rebuilding the list.
+const livePips = new Set();
+function redrawLivePips() {
+  livePips.forEach((draw) => (draw.holder.isConnected ? draw() : livePips.delete(draw)));
+}
+// Potential levels: XP depends on the sum of all levels (this one included).
+function potentialCostFns(current) {
+  const others = potentialLevels() - current;
+  const costTo = (level) => potentialCost(others + current, level - current);
+  costTo.refund = (from, to) => potentialCost(others + to, from - to);
+  return costTo;
+}
+
 function renderList(id) {
   const def = LISTS[id];
   const items = getPath(state, def.path);
@@ -327,10 +406,19 @@ function renderList(id) {
       })));
     if (def.pips) {
       const holder = el("div", { class: "cell cell-pips" });
-      const draw = () => holder.replaceChildren(pips({
-        value: num(item[def.pips.key]), max: def.pips.max, label: `${item.name || t(`blocks.${id}`)} ${t("columns.level")}`,
-        onSet: (v) => { item[def.pips.key] = v; draw(); save(); },
-      }));
+      const draw = () => {
+        const level = num(item[def.pips.key]);
+        const label = item.name || t(`blocks.${id}`);
+        const cost = potentialCostFns(level);
+        holder.replaceChildren(pips({
+          value: level, max: def.pips.max, label: `${label} ${t("columns.level")}`,
+          limit: affordableLevel(level, def.pips.max, cost),
+          tip: (i) => (i > level ? `${cost(i)} XP` : null),
+          onSet: (v) => { if (spendXp(label, level, v, cost)) { item[def.pips.key] = v; changed(); } },
+        }));
+      };
+      draw.holder = holder;
+      livePips.add(draw);
       draw();
       cells.push(holder);
     }
@@ -450,6 +538,12 @@ function bindFields() {
     input.oninput = () => { setPath(state, input.dataset.field, input.value); changedText(); };
   });
 }
+// Copy state into bound fields (e.g. XP shown in two tabs), except the one being typed in.
+function syncFields() {
+  document.querySelectorAll("[data-field]").forEach((input) => {
+    if (input !== document.activeElement) input.value = getPath(state, input.dataset.field) ?? "";
+  });
+}
 
 /* ---------- Refresh ---------- */
 
@@ -457,7 +551,9 @@ function bindFields() {
 function refresh() {
   renderAttributes();
   renderBackgrounds();
-  renderCounters();
+  updateXp();
+  syncFields();
+  redrawLivePips();
   renderDerived();
   renderPassive();
   renderTracks();
@@ -468,9 +564,9 @@ function changed() {
   refresh();
   save();
 }
-// After typing: only cheap updates, so inputs keep focus.
+// After typing: same redraw (the redrawn parts contain no text inputs, so focus is kept).
 function changedText() {
-  renderSummary();
+  refresh();
   save();
 }
 
@@ -479,8 +575,8 @@ function renderAll() {
   document.title = t("appTitle");
   document.getElementById("list-cultures").replaceChildren(...CULTURES.map((c) => el("option", { value: c })));
   document.getElementById("list-cults").replaceChildren(...CULTS.map((c) => el("option", { value: c })));
+  renderXp();
   bindFields();
-  renderConfig();
   Object.keys(LISTS).forEach(renderList);
   renderPortrait();
   document.querySelectorAll('input[name="trackStyle"]').forEach((r) => { r.checked = r.value === settings.trackStyle; });

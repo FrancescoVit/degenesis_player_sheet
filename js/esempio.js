@@ -14,6 +14,8 @@ const EXAMPLE_SHEET = {
     cunning: 0, deception: 2, domination: 2, faith: 0, reaction: 1, willpower: 2,
     empathy: 0, orienteering: 1, perception: 2, primal: 0, survival: 1, taming: 0,
   },
+  // Bash chose Focus: preferred attributes are Intellect, Agility, Psyche.
+  preferred: { body: false, agility: true, charisma: false, intellect: true, psyche: true, instinct: false },
   backgrounds: { allies: 0, authority: 0, network: 2, renown: 0, resources: 1, secrets: 1 },
   potentials: [{ name: "Fractal Memory", level: 1 }],
   scars: { groupName: "", alignment: "", constellation: "", scarsValue: "", infamy: 0 },
@@ -34,5 +36,5 @@ const EXAMPLE_SHEET = {
   ],
   artifacts: [],
   other: { visuals: [], relationships: [], portrait: "" },
-  config: { attrPoints: "16", skillPoints: "28", backgroundPoints: "4", attrMax: 6, skillMax: 6, backgroundMax: 6 },
+  config: { freeEdit: false },
 };
