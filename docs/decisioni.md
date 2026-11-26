@@ -107,7 +107,7 @@ Principio: il codice nel browser non è affidabile; **i controlli stanno sul ser
   - se un segreto finisce per errore in un commit, considerarlo compromesso e **rigenerarlo** (la cronologia git resta pubblica);
   - leggere sempre le pull request altrui prima di accettarle;
   - email dei commit: indirizzo noreply di GitHub.
-- Licenza: da scegliere (es. MIT).
+- Licenza: **MIT** per il codice (file `LICENSE`). Nomi e valori di Degenesis nel catalogo restano dei proprietari (nota nel README).
 - **Sviluppo sul PC personale con Linux Mint**, non nella cartella OneDrive di lavoro: OneDrive e git sugli stessi file possono creare conflitti; inoltre è un account di lavoro.
 
 ### Struttura proposta
@@ -151,7 +151,7 @@ degenesis-scheda/
 - [x] **Divisione della scheda in sezioni/tab**: vedi sezione 3.
 - [x] **Scheda di riferimento**: `riferimenti/Bash.pdf` (cartella esclusa con `.gitignore`).
 - [x] **Manuale**: `riferimenti/DEGENESIS-BOOK-01-PRIMAL-PUNK-EN-LQ.pdf` e `riferimenti/degenesis-rules-cheat-sheet-en-hq.pdf`.
-- [ ] Decisione: termini di gioco tradotti o in originale.
+- [x] Decisione: **tutto in italiano**, anche i termini di gioco, seguendo l'edizione italiana (Wyrd Edizioni).
 
 ## 9. Primo avvio
 

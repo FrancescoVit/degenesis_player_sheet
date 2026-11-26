@@ -19,4 +19,8 @@ Al primo avvio viene caricato un personaggio d'esempio. Dal tab **Altro** si pu�
 
 Decisioni di progetto e piano di lavoro: [`docs/decisioni.md`](docs/decisioni.md).
 
-Degenesis è un marchio dei rispettivi proprietari (SIXMOREVODKA). Questo progetto non è ufficiale e non contiene testi o immagini dei manuali.
+## Licenza
+
+Il codice è distribuito con licenza [MIT](LICENSE).
+
+Degenesis è un marchio dei rispettivi proprietari (SIXMOREVODKA). Questo progetto non è ufficiale e non contiene testi o immagini dei manuali. Il catalogo in `data/` riporta solo nomi e valori di gioco con il riferimento alla pagina del manuale: questi restano dei rispettivi proprietari e non sono coperti dalla licenza MIT.
