@@ -415,8 +415,9 @@ function potentialNote(name) {
     .filter(Boolean).join(" · ");
 }
 
+// Some browsers (Firefox) show only the label in the dropdown: it must start with the name.
 function optionLabel(r) {
-  return [r.group, r.cult, r.prerequisite].filter(Boolean).join(" · ");
+  return [r.name, r.group, r.cult, r.prerequisite].filter(Boolean).join(" · ");
 }
 function renderDatalists() {
   ["weapons", "armor", "items"].forEach((key) => {
