@@ -40,7 +40,7 @@ const DERIVED = [
 
 // Editable lists. `cols` = desktop grid template.
 const LISTS = {
-  potentials: { path: "potentials", cols: "1fr auto", fields: ["name"], pips: { key: "level", max: 3 }, header: false },
+  potentials: { path: "potentials", cols: "1fr auto", fields: ["name"], pips: { key: "level", max: 3 }, header: false, catalog: "potentials" },
   modifiers: { path: "condition.modifiers", cols: "1fr", fields: ["text"], header: false },
   complications: { path: "condition.complications", cols: "1fr", fields: ["text"], header: false },
   weapons: {
@@ -48,14 +48,16 @@ const LISTS = {
     cols: "minmax(8rem,2fr) 4.5rem minmax(5rem,1fr) 5rem 3.5rem minmax(8rem,2fr) 3.5rem 3.5rem 3.5rem",
     fields: ["name", "handling", "distance", "damage", "mag", "properties", "enc", "tech", "slots"],
     numeric: ["enc"],
+    catalog: "weapons",
   },
   armor: {
     path: "armor",
     cols: "minmax(8rem,2fr) 6rem minmax(8rem,3fr) 3.5rem 3.5rem 3.5rem",
     fields: ["name", "armor", "properties", "enc", "tech", "slots"],
     numeric: ["enc"],
+    catalog: "armor",
   },
-  equipment: { path: "equipment", cols: "1fr 4rem", fields: ["name", "enc"], numeric: ["enc"] },
+  equipment: { path: "equipment", cols: "1fr 4rem", fields: ["name", "enc"], numeric: ["enc"], catalog: "items" },
   artifacts: { path: "artifacts", cols: "minmax(8rem,2fr) minmax(6rem,1fr) minmax(8rem,2fr) 7rem", fields: ["name", "activation", "operation", "value"] },
   visuals: { path: "other.visuals", cols: "1fr", fields: ["text"], header: false },
   relationships: { path: "other.relationships", cols: "1fr 4rem", fields: ["name", "mod"] },
@@ -387,6 +389,50 @@ function potentialCostFns(current) {
   return costTo;
 }
 
+/* ---------- Catalog (data/*.js) ---------- */
+
+// Rows of a catalog as objects; empty list if the data file is missing.
+const catalogCache = {};
+function catalog(key) {
+  if (!catalogCache[key]) {
+    const c = (window.CATALOG || {})[key];
+    catalogCache[key] = c ? c.rows.map((r) => Object.fromEntries(c.cols.map((k, i) => [k, r[i]]))) : [];
+  }
+  return catalogCache[key];
+}
+const sameText = (a, b) => String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+const catalogFind = (key, name) => catalog(key).find((r) => sameText(r.name, name));
+
+// Potentials open to this character: the common ones plus those of their Cult.
+function potentialsForCult() {
+  const cult = state.archetype.cult.trim();
+  return catalog("potentials").filter((p) => !p.cult || !cult || sameText(p.cult, cult));
+}
+function potentialNote(name) {
+  const p = catalogFind("potentials", name);
+  if (!p) return "";
+  return [p.cult || t("catalog.common"), p.prerequisite && `${t("catalog.prerequisite")}: ${p.prerequisite}`, `p. ${p.page}`]
+    .filter(Boolean).join(" · ");
+}
+
+function optionLabel(r) {
+  return [r.group, r.cult, r.prerequisite].filter(Boolean).join(" · ");
+}
+function renderDatalists() {
+  ["weapons", "armor", "items"].forEach((key) => {
+    document.getElementById(`cat-${key}`).replaceChildren(
+      ...catalog(key).map((r) => el("option", { value: r.name, label: optionLabel(r) })));
+  });
+  updatePotentialList();
+}
+let potentialListCult = null;
+function updatePotentialList() {
+  if (potentialListCult === state.archetype.cult) return;
+  potentialListCult = state.archetype.cult;
+  document.getElementById("cat-potentials").replaceChildren(
+    ...potentialsForCult().map((p) => el("option", { value: p.name, label: optionLabel(p) })));
+}
+
 function renderList(id) {
   const def = LISTS[id];
   const items = getPath(state, def.path);
@@ -402,8 +448,23 @@ function renderList(id) {
       el("input", {
         value: item[f] ?? "", inputmode: (def.numeric || []).includes(f) ? "numeric" : null,
         "aria-label": `${t(`blocks.${id}`)} ${index + 1} ${t(`columns.${f}`)}`,
-        oninput: (e) => { item[f] = e.target.value; (def.numeric || []).includes(f) ? changed() : changedText(); },
+        list: def.catalog && f === "name" ? `cat-${def.catalog}` : null,
+        oninput: (e) => {
+          item[f] = e.target.value;
+          // Picking a catalog name fills the other columns.
+          const hit = def.catalog && f === "name" && catalogFind(def.catalog, item.name);
+          if (hit && (def.fields.length > 1 || def.catalog === "potentials")) {
+            def.fields.forEach((k) => { if (k !== "name" && hit[k] !== undefined) item[k] = String(hit[k]); });
+            item.name = hit.name;
+            renderList(id);
+            changed();
+            container.querySelectorAll(".cell-name input")[index]?.focus();
+            return;
+          }
+          (def.numeric || []).includes(f) ? changed() : changedText();
+        },
       })));
+    if (def.catalog === "potentials") cells.push(el("span", { class: "cell cell-note note", text: potentialNote(item.name) }));
     if (def.pips) {
       const holder = el("div", { class: "cell cell-pips" });
       const draw = () => {
@@ -571,6 +632,7 @@ function syncFields() {
 
 // After a change affecting numbers: redraw derived parts (no text inputs inside them).
 function refresh() {
+  updatePotentialList();
   renderAttributes();
   renderBackgrounds();
   updateXp();
@@ -598,6 +660,7 @@ function renderAll() {
   document.getElementById("list-cultures").replaceChildren(...CULTURES.map((c) => el("option", { value: c })));
   document.getElementById("list-cults").replaceChildren(...CULTS.map((c) => el("option", { value: c })));
   renderXp();
+  renderDatalists();
   bindFields();
   Object.keys(LISTS).forEach(renderList);
   renderBackpack();

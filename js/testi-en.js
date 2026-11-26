@@ -124,5 +124,18 @@ const TEXT = {
     importError: "This file is not a valid character sheet.",
   },
 
+  catalog: {
+    open: "Open the catalog",
+    title: "DEGENESIS — Catalog",
+    back: "← Back to the sheet",
+    intro: "Names and game values from Katharsys (chapter \"Bazaar\" and the Cult chapters). Descriptions and rules are in the book: see the page number. On the sheet, type or pick a name in Arsenal, Possessions or Potentials and the other columns fill in.",
+    search: "Search", cult: "Cult", allCults: "All Cults", common: "Common", noCult: "No Cult",
+    prerequisite: "Prerequisite", page: "Page", group: "Type", caliber: "Caliber",
+    effect: "Effect", value: "Value", res: "Res.",
+    weapons: "Weapons", armor: "Armor & shields", items: "Items", potentials: "Potentials",
+    potentialsNote: "Everyone can learn the common Potentials; the others only members of that Cult. Clanners have no Cult Potentials in the book.",
+    empty: "Nothing found.",
+  },
+
   saved: "Saved",
 };

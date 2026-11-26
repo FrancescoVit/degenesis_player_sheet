@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DEGENESIS — Character Sheet</title>
-  <link rel="stylesheet" href="css/scheda.css?v=4">
+  <link rel="stylesheet" href="css/scheda.css?v=5">
 </head>
 <body>
   <header class="topbar">
@@ -36,6 +36,10 @@
       </div>
       <datalist id="list-cultures"></datalist>
       <datalist id="list-cults"></datalist>
+      <datalist id="cat-weapons"></datalist>
+      <datalist id="cat-armor"></datalist>
+      <datalist id="cat-items"></datalist>
+      <datalist id="cat-potentials"></datalist>
     </section>
 
     <!-- 2. GAME DASHBOARD: attributes & skills (left) + condition (right), advantages below -->
@@ -147,15 +151,19 @@
           <button type="button" class="button danger" id="btn-reset" data-text="buttons.reset"></button>
         </div>
         <p class="note" data-text="settings.storageNote"></p>
+        <p><a class="button ghost" href="catalogo.html" data-text="catalog.open"></a></p>
       </div>
     </section>
   </main>
 
   <div class="toast" id="toast" data-text="saved"></div>
 
-  <script src="js/testi-en.js?v=4"></script>
-  <script src="js/esempio.js?v=4"></script>
-  <script src="js/db.js?v=4"></script>
-  <script src="js/scheda.js?v=4"></script>
+  <script src="js/testi-en.js?v=5"></script>
+  <script src="js/esempio.js?v=5"></script>
+  <script src="data/armi.js?v=5"></script>
+  <script src="data/oggetti.js?v=5"></script>
+  <script src="data/potenziali.js?v=5"></script>
+  <script src="js/db.js?v=5"></script>
+  <script src="js/scheda.js?v=5"></script>
 </body>
 </html>

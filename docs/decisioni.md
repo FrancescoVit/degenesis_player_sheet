@@ -83,7 +83,10 @@ Browser del giocatore  ──HTTPS──►  GitHub Pages   (serve solo i file H
 - Pulsante **esporta/importa JSON** come backup.
 - **Login**: email con *magic link*, offerto già pronto da Supabase. Niente password da gestire.
 - Tutto il codice che parla con il DB sta in **`js/db.js`**, così si può cambiare servizio (Firebase, PocketBase) toccando un solo file.
-- **Catalogo armi e armature** separato in `data/armi.json`. Per il repository pubblico: solo nomi e valori numerici, niente testi copiati dai manuali.
+- **Catalogo** in `data/`: `armi.js` (armi, armature, scudi), `oggetti.js` (oggetti generali), `potenziali.js` (comuni + di culto, con prerequisiti). File `.js` e non `.json` perché `fetch` di un JSON non funziona aprendo la scheda da file (file://).
+  - Copyright, per il repository pubblico: solo **nomi e valori di gioco** (e nomi delle qualità), più il **numero di pagina** di Katharsys. Niente descrizioni né testi dei manuali. Il campo `effect` degli oggetti è una nota breve del modificatore scritta da noi; i potenziali hanno solo nome, culto, prerequisito e pagina.
+  - Potenziali disponibili a un PG: i comuni (pp. 98–99) + quelli del suo culto. I Clanners nel manuale non hanno potenziali di culto.
+  - Uso nella scheda: scrivendo o scegliendo un nome dalla lista (Arsenal, Possessions, Potentials) si compilano le altre colonne; la lista dei potenziali è filtrata in base al culto. Pagina di consultazione: `catalogo.html` (link dal tab Altro).
 
 ## 5. Sicurezza (decisioni)
 
@@ -119,7 +122,9 @@ degenesis-scheda/
 │  ├─ db.js            ← unico punto che parla con Supabase
 │  └─ testi-it.js      ← tutte le etichette in italiano
 ├─ data/
-│  └─ armi.json        ← catalogo armi/armature
+│  ├─ armi.js          ← catalogo armi/armature/scudi
+│  ├─ oggetti.js       ← catalogo oggetti
+│  └─ potenziali.js    ← catalogo potenziali
 ├─ docs/
 │  └─ decisioni.md     ← questo file
 ├─ .gitignore
@@ -135,7 +140,7 @@ degenesis-scheda/
 
 1. **Bozza statica della scheda** (solo HTML/CSS/JS, nessun DB, salvataggio provvisorio nel browser) per decidere aspetto, tab, caselle, contatori e stile rosso o barrato.
 2. **Logica**: contatori, massimi, esclusioni, tracciati derivati, riserva di dadi.
-3. **Catalogo armi e armature** (`data/armi.json`).
+3. **Catalogo** armi, armature, oggetti e potenziali (`data/*.js`) — fatto.
 4. **Supabase**: tabelle, Row Level Security, login con magic link, lista PG, salvataggio automatico.
 5. **Pubblicazione** su GitHub Pages e prova al tavolo.
 6. **PWA**.

@@ -319,6 +319,24 @@ input:focus, textarea:focus { outline: none; background: #f7f4ec; border-bottom-
 .backpack-slot input { width: 100%; }
 .backpack.off .backpack-slot { opacity: .4; }
 
+/* ---------- Catalog ---------- */
+
+a.button { display: inline-block; text-decoration: none; }
+.cell-note { grid-column: 1 / -1; order: 10; margin-top: -.1rem; font-size: .7rem; }
+.cell-note:empty { display: none; }
+.catalog-filters { display: flex; flex-wrap: wrap; gap: 1rem; margin: .8rem 0; }
+.catalog-filters .field { flex: 1 1 14rem; }
+.catalog-filters select { width: 100%; padding: .25rem .1rem; border: 0; border-bottom: 1px solid var(--ink); background: transparent; font: inherit; }
+.catalog-table { overflow-x: auto; }
+.catalog-table table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.catalog-table th {
+  position: sticky; top: 0; background: var(--ink); color: #fff; text-align: left;
+  font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; padding: .35rem .4rem; white-space: nowrap;
+}
+.catalog-table td { padding: .3rem .4rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.catalog-table td.c-name { font-weight: 600; }
+.catalog-table td.c-page, .catalog-table td.c-enc, .catalog-table td.c-tech, .catalog-table td.c-slots { text-align: center; white-space: nowrap; }
+
 /* ---------- Medium screens ---------- */
 
 @media (max-width: 1300px) {

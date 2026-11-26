@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DEGENESIS — Catalog</title>
+  <link rel="stylesheet" href="css/scheda.css?v=5">
+</head>
+<body class="catalog-page">
+  <header class="topbar">
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+  </header>
+
+  <main>
+    <p><a class="button ghost small" href="scheda.html" data-text="catalog.back"></a></p>
+    <h2 class="section-title" data-text="catalog.title"></h2>
+    <p class="note" data-text="catalog.intro"></p>
+    <div class="catalog-filters">
+      <label class="field"><span data-text="catalog.search"></span><input id="cat-search" type="search"></label>
+      <label class="field"><span data-text="catalog.cult"></span><select id="cat-cult"></select></label>
+    </div>
+    <p class="note" id="cat-note"></p>
+    <div class="catalog-table" id="cat-table"></div>
+  </main>
+
+  <script src="js/testi-en.js?v=5"></script>
+  <script src="data/armi.js?v=5"></script>
+  <script src="data/oggetti.js?v=5"></script>
+  <script src="data/potenziali.js?v=5"></script>
+  <script src="js/catalogo.js?v=5"></script>
+</body>
+</html>
