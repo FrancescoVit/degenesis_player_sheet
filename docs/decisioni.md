@@ -151,7 +151,7 @@ degenesis-scheda/
 - [x] **Divisione della scheda in sezioni/tab**: vedi sezione 3.
 - [x] **Scheda di riferimento**: `riferimenti/Bash.pdf` (cartella esclusa con `.gitignore`).
 - [x] **Manuale**: `riferimenti/DEGENESIS-BOOK-01-PRIMAL-PUNK-EN-LQ.pdf` e `riferimenti/degenesis-rules-cheat-sheet-en-hq.pdf`.
-- [x] Decisione: **tutto in italiano**, anche i termini di gioco, seguendo l'edizione italiana (Wyrd Edizioni).
+- [x] Decisione: **tutto in italiano**, anche i termini di gioco, seguendo l'edizione italiana (Wyrd Edizioni). **In attesa** del manuale italiano dal master. Il manuale Wyrd è a pagamento: va solo in `riferimenti/` (escluso da git) e se ne prendono solo i nomi dei termini, mai testi.
 
 ## 9. Primo avvio
 
