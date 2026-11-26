@@ -70,4 +70,6 @@ Un personaggio appartiene a un gruppo (o a nessuno). Solo il proprietario può s
 
 ## 5. Inattività
 
-Sul piano gratuito il progetto va in pausa dopo circa una settimana senza richieste; i dati restano e si riattiva dalla dashboard (**Restore project**). Vedi `docs/decisioni.md` per la soluzione adottata.
+Sul piano gratuito il progetto va in pausa dopo circa una settimana senza richieste; i dati restano. Qualche giorno prima della sessione: dashboard → progetto → **Restore project** (la riattivazione può richiedere qualche minuto).
+
+Un progetto in pausa si può riattivare solo entro un certo periodo (di solito alcuni mesi: controllare le condizioni attuali di Supabase). Per sicurezza, ogni tanto conviene esportare le schede in JSON.
