@@ -81,6 +81,7 @@ Browser del giocatore  ──HTTPS──►  GitHub Pages   (serve solo i file H
 - **Salvataggio automatico a ogni modifica**, con un breve ritardo dopo l'ultimo cambiamento. Mai "solo alla chiusura": sui telefoni il browser può chiudersi senza preavviso.
 - Conflitti tra due dispositivi aperti sullo stesso PG: vince l'ultima modifica.
 - Pulsante **esporta/importa JSON** come backup.
+- **Esporta tutto** nella lista personaggi (da fare con Supabase): il giocatore scarica tutte le sue schede, il master tutte quelle dei suoi gruppi, in un unico file JSON. Backup automatici (script `pg_dump` sul PC dell'amministratore): rimandati.
 - **Login**: **email e password**, servizio **chiuso**: registrazione disattivata, gli account li crea l'amministratore dalla dashboard e li distribuisce. Conferma email disattivata, quindi nessun servizio email esterno necessario. Password dimenticata: la reimposta l'amministratore. Il codice resta aperto su GitHub: chi vuole lo usa con il proprio progetto Supabase (guida in `docs/supabase.md`).
 - **Gruppi e master**: gli utenti stanno in **gruppi** (i giocatori dello stesso tavolo), con ruolo `giocatore` o `master`. Il master legge e modifica (non elimina) tutte le schede dei gruppi di cui è master, anche più gruppi. Gruppi e ruoli li gestisce solo l'amministratore. Schema e regole: `supabase/schema.sql`.
 - Tutto il codice che parla con il DB sta in **`js/db.js`**, così si può cambiare servizio (Firebase, PocketBase) toccando un solo file.
