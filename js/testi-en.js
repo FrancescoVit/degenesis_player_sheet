@@ -87,6 +87,7 @@ const TEXT = {
     counterMelee: "Counter (Melee)", counterMeleeHint: "BOD + Melee",
     activeDefense: "Active defense",
     encumbrance: "Encumbrance", encumbranceHint: "carried / limit (BOD + Force)",
+    encumbranceOver: "over the limit: −{n}D",
     passive: "Passive defense", passiveHint: "Base 1 + situation",
     standing: "Active & standing +1", moved: "Moved > 2 m +1",
     coverPartial: "Partial cover +1", coverComplete: "Complete cover +4",
@@ -100,7 +101,7 @@ const TEXT = {
   },
 
   encumbrance: {
-    total: "Total encumbrance", limit: "limit (Body + Force)",
+    total: "Total encumbrance", limit: "limit (Body + Force)", penalty: "Penalty −{n}D.",
     note: "Weapons + armor + equipment + backpack. −1D per point over the limit.",
   },
 

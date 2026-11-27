@@ -549,10 +549,10 @@ function renderBackpack() {
 // Everything carried counts: weapons, armor, equipment and the backpack.
 function encumbrance() {
   const sum = (list) => list.reduce((s, it) => s + num(it.enc), 0);
-  return {
-    total: sum(state.weapons) + sum(state.armor) + sum(state.equipment) + (state.backpack.carried ? BACKPACK_ENC : 0),
-    limit: state.attributes.body + state.skills.force,
-  };
+  const total = sum(state.weapons) + sum(state.armor) + sum(state.equipment) + (state.backpack.carried ? BACKPACK_ENC : 0);
+  const limit = state.attributes.body + state.skills.force;
+  // −1D per point over the limit.
+  return { total, limit, penalty: Math.max(0, total - limit) };
 }
 
 const formatPool = (dice) => (dice > MAX_DICE ? `${MAX_DICE}D+${dice - MAX_DICE}` : `${dice}D`);
@@ -573,7 +573,8 @@ function renderDerived() {
   document.getElementById("derived").replaceChildren(
     el("div", { class: "tiles" },
       tile(t("derived.initiative"), pool(initiative), t("derived.initiativeHint")),
-      tile(t("derived.encumbrance"), `${enc.total} / ${enc.limit}`, t("derived.encumbranceHint"), enc.total > enc.limit ? "over" : "")),
+      tile(t("derived.encumbrance"), `${enc.total} / ${enc.limit}${enc.penalty ? ` (−${enc.penalty}D)` : ""}`,
+        enc.penalty ? t("derived.encumbranceOver").replace("{n}", enc.penalty) : t("derived.encumbranceHint"), enc.penalty ? "over" : "")),
     el("div", { class: "tile-group" },
       el("span", { class: "tile-group-label", text: t("derived.activeDefense") }),
       el("div", { class: "tiles" }, ...active.map((d) => tile(t(`derived.${d.key}`), pool(d), t(`derived.${d.key}Hint`))))));
@@ -597,13 +598,15 @@ function renderPassive() {
 }
 
 function renderEncumbrance() {
-  const { total, limit } = encumbrance();
+  const { total, limit, penalty } = encumbrance();
   const node = document.getElementById("encumbrance");
   node.classList.toggle("over", total > limit);
-  node.replaceChildren(
+  node.replaceChildren(...[
     el("strong", { text: `${t("encumbrance.total")}: ${total}` }),
     el("span", { text: ` / ${limit} ${t("encumbrance.limit")}. ` }),
-    el("span", { class: "note", text: t("encumbrance.note") }));
+    penalty ? el("strong", { text: `${t("encumbrance.penalty").replace("{n}", penalty)} ` }) : null,
+    el("span", { class: "note", text: t("encumbrance.note") }),
+  ].filter(Boolean));
 }
 
 /* ---------- Portrait ---------- */
