@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DEGENESIS — Character Sheet</title>
-  <link rel="stylesheet" href="css/scheda.css?v=6">
+  <link rel="stylesheet" href="css/scheda.css?v=7">
 </head>
 <body>
   <header class="topbar">
@@ -150,20 +150,22 @@
           <button type="button" class="button ghost" id="btn-example" data-text="buttons.loadExample"></button>
           <button type="button" class="button danger" id="btn-reset" data-text="buttons.reset"></button>
         </div>
-        <p class="note" data-text="settings.storageNote"></p>
+        <p class="note" id="storage-note"></p>
         <p><a class="button ghost" href="catalogo.html" data-text="catalog.open"></a></p>
       </div>
     </section>
   </main>
 
-  <div class="toast" id="toast" data-text="saved"></div>
+  <div class="toast" id="toast" role="status"></div>
 
-  <script src="js/testi-en.js?v=6"></script>
-  <script src="js/esempio.js?v=6"></script>
-  <script src="data/armi.js?v=6"></script>
-  <script src="data/oggetti.js?v=6"></script>
-  <script src="data/potenziali.js?v=6"></script>
-  <script src="js/db.js?v=6"></script>
-  <script src="js/scheda.js?v=6"></script>
+  <script src="js/testi-en.js?v=7"></script>
+  <script src="js/esempio.js?v=7"></script>
+  <script src="data/armi.js?v=7"></script>
+  <script src="data/oggetti.js?v=7"></script>
+  <script src="data/potenziali.js?v=7"></script>
+  <script src="js/vendor/supabase-2.119.2.js"></script>
+  <script src="js/config.js?v=7"></script>
+  <script src="js/db.js?v=7"></script>
+  <script src="js/scheda.js?v=7"></script>
 </body>
 </html>

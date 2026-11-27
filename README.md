@@ -2,18 +2,21 @@
 
 Scheda personaggio interattiva per **Degenesis Rebirth**, utilizzabile da PC, tablet e smartphone.
 
-> Stato: **bozza statica** (fase 1). I dati si salvano solo nel browser in cui si apre la scheda.
+> Stato: **in sviluppo**. Login e salvataggio online con Supabase; interfaccia ancora in inglese.
 
-## Provarla
+## Usarla
 
-**Online:** https://francescovit.github.io/degenesis_player_sheet/scheda.html
+**Online:** https://francescovit.github.io/degenesis_player_sheet/
 
-Oppure in locale:
+Si entra con email e password. Il servizio è chiuso: gli account li crea l'amministratore. Dopo il login c'è l'elenco dei propri personaggi (e, per il master, di quelli del gruppo); le schede si salvano da sole e sono uguali su ogni dispositivo.
 
-1. Scarica il repository (**Code → Download ZIP**) e scompattalo.
-2. Apri `scheda.html` con il browser.
+**Senza account, solo in questo browser:** https://francescovit.github.io/degenesis_player_sheet/scheda.html (oppure scarica il repository e apri `scheda.html`). Al primo avvio c'è un personaggio d'esempio; dal tab **Altro** si esporta/importa in JSON.
 
-Al primo avvio viene caricato un personaggio d'esempio. Dal tab **Altro** si può svuotare la scheda o esportarla/importarla in JSON.
+## Usarla con il proprio database
+
+Il codice è aperto: per usarla con il proprio tavolo si crea un progetto Supabase gratuito seguendo [`docs/supabase.md`](docs/supabase.md) e si mettono URL e chiave pubblica in `js/config.js`. Con `js/config.js` vuoto la scheda funziona solo in locale.
+
+Catalogo di armi, armature, oggetti e potenziali: `catalogo.html`.
 
 ## Documentazione
 

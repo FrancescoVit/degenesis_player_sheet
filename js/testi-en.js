@@ -118,7 +118,8 @@ const TEXT = {
 
   settings: {
     trackStyle: "Lost boxes style", styleRed: "Red fill", styleCross: "Crossed (X)",
-    storageNote: "Draft: data is saved only in this browser (localStorage).",
+    storageNote: "Local sheet: data is saved only in this browser.",
+    storageOnline: "Online sheet: saved automatically to your account, the same on every device.",
     confirmReset: "Empty the whole sheet? This cannot be undone (export first if needed).",
     confirmExample: "Replace the current sheet with the example character?",
     importError: "This file is not a valid character sheet.",
@@ -137,5 +138,32 @@ const TEXT = {
     empty: "Nothing found.",
   },
 
+  home: {
+    title: "DEGENESIS — Characters",
+    characters: "Characters",
+    loginTitle: "Log in",
+    email: "Email", password: "Password", login: "Log in", logout: "Log out",
+    loginError: "Login failed: check email and password.",
+    loggedAs: "Logged in as",
+    noAccount: "Accounts are created by the administrator: ask them for yours.",
+    mine: "My characters", ofGroups: "Characters of my groups (master)",
+    none: "No characters yet.",
+    noGroup: "No group", group: "Group", updated: "Updated", master: "master",
+    open: "Open", duplicate: "Duplicate", delete: "Delete",
+    newCharacter: "New character", newIn: "in group",
+    importJson: "Import JSON", importLocal: "Upload the sheet saved in this browser",
+    exportAll: "Export all (JSON)",
+    copySuffix: "(copy)",
+    confirmDelete: "Delete \"{name}\" for good? This cannot be undone (export first if needed).",
+    changePassword: "Change password", newPassword: "New password (at least 8 characters)",
+    passwordChanged: "Password changed.", passwordShort: "The password must be at least 8 characters.",
+    error: "Something went wrong: {msg}",
+    loadError: "This character cannot be opened: it does not exist or you have no access. If the game has been idle for a while, the database may be paused (the administrator can restore it).",
+    paused: "The database does not answer: it may be paused after a period of inactivity. The administrator can restore it from the Supabase dashboard.",
+    localMode: "This copy of the site has no online database configured: the sheet is saved only in this browser.",
+    openLocal: "Open the local sheet",
+  },
+
   saved: "Saved",
+  saveError: "Not saved: retrying…",
 };

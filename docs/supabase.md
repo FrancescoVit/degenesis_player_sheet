@@ -13,7 +13,7 @@ Chi vuole usare il codice per il proprio tavolo crea il proprio progetto Supabas
    - **Allow new users to sign up**: disattivato (registrazione chiusa);
    - **Email** provider: attivo; **Confirm email**: disattivato (gli account li crea l'amministratore).
 5. *Authentication → URL Configuration*: **Site URL** = indirizzo GitHub Pages della scheda.
-6. *Project Settings → API*: copiare **Project URL** e chiave **anon / publishable** nel file di configurazione del sito (vedi README).
+6. *Project Settings → API*: copiare **Project URL** e chiave **anon / publishable** in `js/config.js`.
    - La chiave **service_role / secret** non va **mai** nel codice né nel repository, né data a nessuno.
 
 ## 2. Creare un account

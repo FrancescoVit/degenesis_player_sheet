@@ -131,19 +131,40 @@ function el(tag, props = {}, ...children) {
 
 /* ---------- Saving ---------- */
 
+// Online (scheda.html?id=…): the character row on Supabase. Otherwise: this browser only.
+const characterId = new URLSearchParams(location.search).get("id");
+const onlineSheet = Boolean(characterId && DB.online);
+
 let saveTimer = null;
+let unsaved = false; // changes not yet stored (pending or failed)
 function save() {
+  unsaved = true;
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
-    const ok = await DB.saveSheet(state);
-    if (ok) flashToast();
-  }, 600);
+  saveTimer = setTimeout(storeNow, 600);
 }
-function flashToast() {
+async function storeNow() {
+  try {
+    if (onlineSheet) await DB.saveCharacter(characterId, state);
+    else if (!(await DB.saveLocal(state))) throw new Error("localStorage");
+    unsaved = false;
+    flashToast(t("saved"));
+  } catch (err) {
+    console.error(err);
+    // Keep the changes in memory and try again shortly.
+    flashToast(t("saveError"), true);
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(storeNow, 10000);
+  }
+}
+window.addEventListener("beforeunload", (e) => { if (unsaved) { e.preventDefault(); e.returnValue = ""; } });
+
+function flashToast(text, isError = false) {
   const toast = document.getElementById("toast");
+  toast.textContent = text;
+  toast.classList.toggle("error", isError);
   toast.classList.add("show");
   clearTimeout(flashToast.timer);
-  flashToast.timer = setTimeout(() => toast.classList.remove("show"), 900);
+  flashToast.timer = setTimeout(() => toast.classList.remove("show"), isError ? 4000 : 900);
 }
 
 /* ---------- Pips ---------- */
@@ -192,11 +213,12 @@ function renderSummary() {
   const a = state.archetype;
   const item = (label, value, cls) => el("span", { class: "sum-item " + (cls || "") },
     el("span", { class: "sum-label", text: label }), el("span", { class: "sum-value", text: value || "—" }));
-  document.getElementById("summary").replaceChildren(
+  document.getElementById("summary").replaceChildren(...[
+    onlineSheet ? el("a", { class: "sum-home", href: "index.html", text: `← ${t("home.characters")}` }) : null,
     item(t("summary.name"), a.name || t("summary.unnamed"), "sum-name"),
     item(t("summary.cult"), a.cult),
     item(t("summary.money"), a.money),
-  );
+  ].filter(Boolean));
 }
 
 /* ---------- Experience (Katharsys p. 102–103) ---------- */
@@ -720,8 +742,25 @@ function setupControls() {
 /* ---------- Start ---------- */
 
 (async function start() {
-  const saved = await DB.loadSheet();
-  state = loadState(saved || structuredClone(EXAMPLE_SHEET));
+  let saved = null;
+  if (onlineSheet) {
+    // Online sheet: must be logged in, and the database must let this user read it.
+    if (!(await DB.currentUser())) { location.replace("index.html"); return; }
+    try {
+      saved = (await DB.loadCharacter(characterId)).dati;
+    } catch (err) {
+      console.error(err);
+      document.querySelector("main").replaceChildren(
+        el("p", { class: "load-error", text: t("home.loadError") }),
+        el("p", {}, el("a", { class: "button", href: "index.html", text: `← ${t("home.characters")}` })));
+      return;
+    }
+  } else {
+    saved = await DB.loadLocal();
+  }
+  // A new online character starts empty; the very first local sheet shows the example.
+  state = loadState(saved && saved.attributes ? saved : onlineSheet ? blankSheet() : structuredClone(EXAMPLE_SHEET));
+  document.getElementById("storage-note").textContent = t(onlineSheet ? "settings.storageOnline" : "settings.storageNote");
   setupControls();
   renderTabs();
   renderAll();

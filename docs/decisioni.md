@@ -116,7 +116,7 @@ Principio: il codice nel browser non è affidabile; **i controlli stanno sul ser
 
 ```
 degenesis-scheda/
-├─ index.html          ← login + lista PG
+├─ index.html          ← login + lista PG (+ Esporta tutto, cambio password)
 ├─ scheda.html         ← la scheda a tab
 ├─ css/
 ├─ js/
@@ -143,7 +143,7 @@ degenesis-scheda/
 1. **Bozza statica della scheda** (solo HTML/CSS/JS, nessun DB, salvataggio provvisorio nel browser) per decidere aspetto, tab, caselle, contatori e stile rosso o barrato.
 2. **Logica**: contatori, massimi, esclusioni, tracciati derivati, riserva di dadi.
 3. **Catalogo** armi, armature, oggetti e potenziali (`data/*.js`) — fatto.
-4. **Supabase**: tabelle, Row Level Security, login con magic link, lista PG, salvataggio automatico.
+4. **Supabase**: tabelle, Row Level Security, login con email e password, lista PG, salvataggio automatico — fatto (manca la prova delle regole con un secondo account).
 5. **Pubblicazione** su GitHub Pages e prova al tavolo.
 6. **PWA**.
 7. Più avanti: **vista master**.

@@ -302,6 +302,37 @@ input:focus, textarea:focus { outline: none; background: #f7f4ec; border-bottom-
   opacity: 0; transition: opacity .25s; pointer-events: none;
 }
 .toast.show { opacity: .95; }
+.toast.error { background: var(--accent); }
+
+/* ---------- Characters page ---------- */
+
+.sum-home { color: #fff; text-decoration: none; font-size: .75rem; letter-spacing: .08em; margin-right: .4rem; }
+.sum-home:hover { text-decoration: underline; }
+.load-error { color: var(--accent); }
+.home-bar { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; justify-content: flex-end; max-width: 1440px; margin: 0 auto; padding: .5rem 1rem; font-size: .78rem; color: #ccc; }
+.home-bar .home-title { margin-right: auto; color: #fff; letter-spacing: .2em; text-transform: uppercase; font-size: .8rem; }
+.home-bar button { background: none; border: 1px solid #777; color: #fff; border-radius: var(--radius); padding: .2rem .7rem; cursor: pointer; font: inherit; }
+.login { max-width: 22rem; margin: 2rem auto; display: grid; gap: .9rem; }
+.login .error, .home-msg.error { color: var(--accent); }
+.home-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .6rem 0 1rem; }
+.home-actions select { font: inherit; padding: .3rem; }
+.char-list { display: grid; gap: .1rem; }
+.char-row {
+  display: grid; grid-template-columns: minmax(8rem, 2fr) minmax(8rem, 1fr) 9rem auto; gap: .6rem; align-items: center;
+  padding: .45rem 0; border-bottom: 1px solid var(--line);
+}
+.char-row .char-name { font-family: var(--font-serif); font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+.char-row .char-name:hover { text-decoration: underline; }
+.char-row select { font: inherit; font-size: .8rem; padding: .2rem; max-width: 100%; }
+.char-row .char-date { font-size: .75rem; color: var(--ink-soft); }
+.char-row .char-buttons { display: flex; gap: .3rem; justify-content: flex-end; }
+.password-box { display: flex; flex-wrap: wrap; gap: .5rem; align-items: end; margin-top: .5rem; }
+.password-box .field { flex: 1 1 14rem; }
+@media (max-width: 700px) {
+  .char-row { grid-template-columns: 1fr auto; }
+  .char-row .char-group, .char-row .char-date { grid-column: 1; }
+  .char-row .char-buttons { grid-column: 2; grid-row: 1 / span 3; flex-direction: column; }
+}
 
 /* ---------- Backpack ---------- */
 
