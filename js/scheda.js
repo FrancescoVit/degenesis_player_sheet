@@ -758,8 +758,8 @@ function setupControls() {
   } else {
     saved = await DB.loadLocal();
   }
-  // A new online character starts empty; the very first local sheet shows the example.
-  state = loadState(saved && saved.attributes ? saved : onlineSheet ? blankSheet() : structuredClone(EXAMPLE_SHEET));
+  // An online character keeps what it has (missing parts get defaults); the very first local sheet shows the example.
+  state = loadState(onlineSheet ? saved || {} : saved && saved.attributes ? saved : structuredClone(EXAMPLE_SHEET));
   document.getElementById("storage-note").textContent = t(onlineSheet ? "settings.storageOnline" : "settings.storageNote");
   setupControls();
   renderTabs();
