@@ -143,7 +143,7 @@ degenesis-scheda/
 1. **Bozza statica della scheda** (solo HTML/CSS/JS, nessun DB, salvataggio provvisorio nel browser) per decidere aspetto, tab, caselle, contatori e stile rosso o barrato.
 2. **Logica**: contatori, massimi, esclusioni, tracciati derivati, riserva di dadi.
 3. **Catalogo** armi, armature, oggetti e potenziali (`data/*.js`) — fatto.
-4. **Supabase**: tabelle, Row Level Security, login con email e password, lista PG, salvataggio automatico — fatto (manca la prova delle regole con un secondo account).
+4. **Supabase**: tabelle, Row Level Security, login con email e password, lista PG, salvataggio automatico — fatto. Regole di accesso verificate il 2026-11-27 con un account di prova (giocatore isolato, master del gruppo legge e modifica, nessuno crea gruppi o cambia proprietario).
 5. **Pubblicazione** su GitHub Pages e prova al tavolo.
 6. **PWA**.
 7. Più avanti: **vista master**.
