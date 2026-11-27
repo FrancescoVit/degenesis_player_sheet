@@ -99,6 +99,11 @@ alter table public.personaggi    enable row level security;
 -- Nothing for anonymous visitors.
 revoke all on public.gruppi, public.membri_gruppo, public.personaggi from anon;
 
+-- Logged-in users: table privileges (newer projects no longer grant them by
+-- default). What each user actually sees or changes is limited by the policies below.
+grant select on public.gruppi, public.membri_gruppo to authenticated;
+grant select, insert, update, delete on public.personaggi to authenticated;
+
 -- Groups: visible to their members. Created/changed only from the dashboard.
 create policy "gruppi: leggono i membri" on public.gruppi
   for select to authenticated using (public.sono_membro(id));
